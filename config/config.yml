@@ -1,0 +1,37 @@
+project:
+  name: ceg3155_lab2
+  top_level: adderNbits # defualt: template
+  build_dir: build
+  sim_tool: xsim
+  synth_tool: quartus
+  source_type: vhdlSource-1993
+
+pre_built_compontents:
+  location: './src/pre_built_components'
+  source_type: vhdlSource-1993
+
+device_settings: # Quartus
+  family: 'Cyclone IV E'
+  device: 'EP4CE115F29C7'
+  cable: 'USB Blaster [USB-0]'
+  pgm: 'none' # none/quartus -- Programming tool
+  board_device_index: '1'
+
+# device_settings: Vivado
+#   part: 'xc7z007sclg400-1'
+#   board_part: ''
+#   synth: vivado
+#   pgm: '' # none/vivado -- Programming tool
+#   jtag_freq: 0
+#   hw_target: ''
+#   board_device_index: 1
+
+sim_options:
+  output_wdb: true
+
+tool_options:
+# Custom extra tool options
+
+tool_locations:
+  vivado: "C:\\Xilinx\\Vivado\\2024.1\\bin" # Folder than contains bin
+  quartus: "C:\\intelFPGA\\23.1std\\quartus\\bin64" # Folder than contains bin64
