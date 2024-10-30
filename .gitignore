@@ -1,3 +1,4 @@
 build
 include
+output
 config/xsim_cfg.tcl

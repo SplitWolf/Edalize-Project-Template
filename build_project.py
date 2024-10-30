@@ -1,6 +1,7 @@
 import os
 from argparse import ArgumentParser
 from pathlib import Path
+from shutil import copy
 from edalize import *
 from edalize import edatool
 
@@ -60,6 +61,7 @@ def main():
                      "run all\n",
                      "exit"
                 ])
+                f.close()
                 print("Using default xsim log script")
                 xsim_config_tcl = "../../config/xsim_cfg.tcl"
             edam['tool_options']['xsim']['xsim_options'] = ["--wdb " + "./" + toplevel + '.wdb', "--tclbatch " + xsim_config_tcl]
@@ -108,6 +110,10 @@ def main():
     #     subprocess.run(["quartus_map", "./build/test_project"]) 
     backend.run()
     # backend.run()
+    copy(build_dir + "/sim/" + toplevel + ".wdb", "output/")
+    copy(build_dir + "/sim/" + toplevel + ".wcfg", "output/")
+    # TODO: Add swtich to open output in gui for veiwing
+    #Open Command: xsim -gui .\output\${toplevel}.wdb -view .\output\${toplevel}.
 
 if __name__ == "__main__":
     main()
