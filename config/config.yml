@@ -1,5 +1,5 @@
 project:
-  name: ceg3155_lab2
+  name: template
   top_level: adderNbits # defualt: template
   build_dir: build
   sim_tool: xsim
