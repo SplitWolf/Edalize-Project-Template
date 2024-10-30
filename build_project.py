@@ -51,6 +51,15 @@ def main():
             edam['tool_options']['xsim']['xelab_options'] = ["-debug typical"]
             xsim_config_tcl = "../../config/xsim_cfg_" + toplevel + ".tcl"
             if not Path(xsim_config_tcl).is_file():
+                f = open("./config/xsim_cfg.tcl","w")
+                f.writelines([
+                     "log_wave -recursive *\n",
+                     "create_wave_config\n",
+                     "add_wave *\n",
+                     "save_wave_config " + toplevel + ".wcfg\n",
+                     "run all\n",
+                     "exit"
+                ])
                 print("Using default xsim log script")
                 xsim_config_tcl = "../../config/xsim_cfg.tcl"
             edam['tool_options']['xsim']['xsim_options'] = ["--wdb " + "./" + toplevel + '.wdb', "--tclbatch " + xsim_config_tcl]
@@ -90,6 +99,7 @@ def main():
         os.makedirs(bDir)
 
     # TODO: Catch exceptions
+    # TODO: Hooks for scripts or smth
 
     backend.configure()
     # try:

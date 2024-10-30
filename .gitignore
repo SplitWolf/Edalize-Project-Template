@@ -1,2 +1,3 @@
 build
 include
+config/xsim_cfg.tcl
