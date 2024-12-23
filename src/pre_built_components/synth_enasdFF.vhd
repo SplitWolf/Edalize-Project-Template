@@ -7,7 +7,7 @@ entity synth_enasdFF is
         i_cen: in std_logic;
         i_clk   : in std_logic;
         i_setn : in std_logic;
-        o_q, o_qBar: out std_logic
+        o_q, o_qn: out std_logic
     );
 end entity synth_enasdFF;
 
@@ -15,18 +15,18 @@ architecture behav of synth_enasdFF is
     signal int_q : std_logic;
 begin
 
-bit1: process (i_clk)
+bit1: process (i_clk, i_setn)
 begin
     if i_setn = '0' then
         int_q <= '1';
     elsif rising_edge(i_clk) then
             if(i_cen = '1') then
-                int_q <= i_d;
+                int_q <= i_d after 2ns;
             end if;
     end if;
 end process bit1;
 
 o_q     <=  int_q;
-o_qBar  <=	not(int_q);
+o_qn  <=	not(int_q);
 
 end architecture;
