@@ -12,7 +12,7 @@ end pipoShiftRegisterNbits_tb;
 architecture sim of pipoShiftRegisterNbits_tb is
     component pipoShiftRegisterNBits is
         generic(
-            DataWidth: integer := 1
+            DataWidth: natural := 1
         );
         port (
             i_in: in std_logic_vector ((DataWidth-1) downto 0); 
