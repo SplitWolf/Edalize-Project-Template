@@ -17,7 +17,7 @@ architecture sim of adderNbits_tb is
 
     component adderNbits is
         generic (
-            DataWidth: integer := 4
+            DataWidth: natural := 4
         );
         port(
             i_a, i_b: in std_logic_vector(DataWidth-1 downto 0);
@@ -36,7 +36,7 @@ DUT: entity basic_rtl.adderNbits
  port map(
     i_a => A,
     i_b => B,
-    i_addBarSub => addSub,
+    i_addn_sub => addSub,
     o_sum => SUM,
     o_cout => c_out,
     o_overflow => open,
