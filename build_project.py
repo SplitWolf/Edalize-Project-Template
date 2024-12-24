@@ -64,6 +64,8 @@ def main():
                 f.close()
                 print("Using default xsim log script")
                 xsim_config_tcl = "../../config/xsim_cfg.tcl"
+            else:
+                 xsim_config_tcl = "../../" + xsim_config_tcl;
             edam['tool_options']['xsim']['xsim_options'] = ["--wdb " + "./" + toplevel + '.wdb', "--tclbatch " + xsim_config_tcl]
             # TODO: Copy output file after running tool
         else: 
