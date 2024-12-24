@@ -13,7 +13,10 @@ def main():
     parser = ArgumentParser()
     parser.add_argument("-m","--mode",dest="mode",help="Mode to compile sim (complies _tb file), build-intel, or build-amd",default="sim")
     parser.add_argument("-c","--configure-only",dest="config_only",help="Do not build, only configure the project",action="store_true")
+    parser.add_argument("-p","--program",dest="pgm",help="Do not build, only configure the project",action="store_true")
     args = parser.parse_args()
+    config_only = args.config_only
+    pgm = args.pgm
     mode = args.mode
     print(mode)
 
