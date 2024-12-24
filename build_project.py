@@ -128,14 +128,14 @@ def main():
     # TODO: Hooks for scripts or smth
 
     backend.configure()
-    # try:
-    backend.build()
-    # except:
-    #     subprocess.run(["quartus_map", "./build/test_project"]) 
-    backend.run()
-    # backend.run()
-    copy(build_dir + "/sim/" + toplevel + ".wdb", "output/")
-    copy(build_dir + "/sim/" + toplevel + ".wcfg", "output/")
+    # TODO: Potentially make this a pre-build hook
+    if mode == "build-intel":
+        project_tcl = open(bDir  + "\\" + project_options['name'] + ".tcl", "a")
+        quartus_assign_tcl = open("./config/quartus_assign.tcl","r")
+        for line in quartus_assign_tcl:
+            project_tcl.write(line)
+        project_tcl.close()
+        quartus_assign_tcl.close()
     # TODO: Add swtich to open output in gui for veiwing
     #Open Command: xsim -gui .\output\${toplevel}.wdb -view .\output\${toplevel}.
 
