@@ -12,6 +12,7 @@ import glob
 def main():
     parser = ArgumentParser()
     parser.add_argument("-m","--mode",dest="mode",help="Mode to compile sim (complies _tb file), build-intel, or build-amd",default="sim")
+    parser.add_argument("-c","--configure-only",dest="config_only",help="Do not build, only configure the project",action="store_true")
     args = parser.parse_args()
     mode = args.mode
     print(mode)
@@ -136,6 +137,13 @@ def main():
             project_tcl.write(line)
         project_tcl.close()
         quartus_assign_tcl.close()
+
+    if not config_only:
+        backend.build()
+        backend.run()
+    else: 
+        exit(0)
+
     # TODO: Add swtich to open output in gui for veiwing
     #Open Command: xsim -gui .\output\${toplevel}.wdb -view .\output\${toplevel}.
 
