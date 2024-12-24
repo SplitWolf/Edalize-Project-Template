@@ -51,7 +51,7 @@ def main():
             tool = 'xsim'
             edam['tool_options']['xsim'] = {}
             edam['tool_options']['xsim']['xelab_options'] = ["-debug typical"]
-            xsim_config_tcl = "../../config/xsim_cfg_" + toplevel + ".tcl"
+            xsim_config_tcl = "config/xsim_cfg_" + toplevel + ".tcl"
             if not Path(xsim_config_tcl).is_file():
                 f = open("./config/xsim_cfg.tcl","w")
                 f.writelines([
