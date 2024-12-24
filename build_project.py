@@ -118,6 +118,8 @@ def main():
     for file in src_files + src_testbench_files:
             all_files.append({'name': os.path.relpath(file,bDir), 'file_type': config_data['project']['source_type'], 'logical_name': 'work'})
             
+    #TODO: Make dynamic
+    all_files.append({'name': os.path.relpath('./config/lab1.xdc',bDir), 'file_type': 'xdc'})
     edam['files'] = all_files
 
     backend = edatool.get_edatool(tool)(edam=edam, work_root=bDir)
