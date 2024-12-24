@@ -72,16 +72,21 @@ def main():
             print("Sim tool not yet supported")
             exit(0)
     elif mode == "build-intel":
-        # TODO: Pass quartus options for pin assignments
         if project_options['synth_tool'] == 'quartus':
             tool = 'quartus'
-            bDir = build_dir + "\\synth"
+            bDir = build_dir + "\\synth-intel"
             edam['tool_options']['quartus'] = {}
-            edam['tool_options']['quartus']['family'] = config_data['device_settings']['family']
-            edam['tool_options']['quartus']['device'] = config_data['device_settings']['device']
-            edam['tool_options']['quartus']['cable'] = config_data['device_settings']['cable']
-            edam['tool_options']['quartus']['pgm'] = config_data['device_settings']['pgm']
+            edam['tool_options']['quartus']['family'] = config_data['device_settings_intel']['family']
+            edam['tool_options']['quartus']['device'] = config_data['device_settings_intel']['device']
+            edam['tool_options']['quartus']['cable'] = config_data['device_settings_intel']['cable']
             edam['tool_options']['quartus']['board_device_index']= config_data['device_settings']['board_device_index']
+            if pgm:
+                edam['tool_options']['quartus']['pgm'] = 'quartus'
+            else:
+                edam['tool_options']['quartus']['pgm'] = 'none'
+        else:
+            print("Synthesis tool not yet supported")
+            exit(0)
     else:
         print("Mode not recognized")
         exit(1)
