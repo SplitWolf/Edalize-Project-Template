@@ -27,7 +27,7 @@ def main():
     pre_built_files_vhdl = glob.glob(os.path.join(config_data['pre_built_compontents']['location'], "*.vhd"))
     pre_built_testbenches_vhdl = glob.glob(os.path.join(config_data['pre_built_compontents']['location'], "testbenches/*.vhd"))
 
-    src_files = glob.glob(os.path.join('./src', "*.vhd"))
+    src_files = glob.glob(os.path.join('./src', "*.vhd")) + glob.glob(os.path.join('./src', "*.sv")) + glob.glob(os.path.join('./src', "*.v"))
     src_testbench_files = glob.glob(os.path.join('./src', "testbenches/*.vhd"))
 
     toplevel = project_options['top_level']
