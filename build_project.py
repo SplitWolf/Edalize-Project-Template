@@ -87,6 +87,23 @@ def main():
         else:
             print("Synthesis tool not yet supported")
             exit(0)
+    elif mode == "build-amd":
+        # TODO: Find out why source files are not added to vivado or manually add them  
+        # TODO: Possibly delete .bit to force recompile
+        if project_options['synth_tool'] == 'vivado':
+            tool = 'vivado'
+            bDir = build_dir + "\\synth-amd"
+            edam['tool_options']['vivado'] = {}
+            edam['tool_options']['vivado']['part'] = config_data['device_settings_amd']['part']
+            edam['tool_options']['vivado']['synth'] = config_data['device_settings_amd']['synth']
+            # edam['tool_options']['vivado']['part'] = config_data['device_settings_amd']['board_part']
+            if pgm:
+                edam['tool_options']['vivado']['pgm'] = 'vivado'
+            else:
+                edam['tool_options']['vivado']['pgm'] = 'none'
+        else:
+            print("Synthesis tool not yet supported")
+            exit(0)
     else:
         print("Mode not recognized")
         exit(1)
