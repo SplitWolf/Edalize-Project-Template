@@ -129,9 +129,7 @@ def main():
 
     if not os.path.exists(bDir): 
         os.makedirs(bDir)
-
     # TODO: Catch exceptions
-    # TODO: Hooks for scripts or smth
 
     backend.configure()
     # TODO: Potentially make this a pre-build hook
