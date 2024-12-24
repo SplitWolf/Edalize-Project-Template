@@ -144,6 +144,27 @@ def main():
     else: 
         exit(0)
 
+    # Generate Ouptut Files
+    #TODO: Use variable for output dir
+    #TODO: Implement for other modes
+    if mode == "sim":
+        if project_options['sim_tool'] == 'xsim':
+            if not os.path.exists("output"): 
+                os.makedirs("output")
+            copy(os.path.join(bDir, toplevel + ".wdb"), "output/")
+            copy(os.path.join(bDir, toplevel + ".wcfg"), "output/")
+            ouput_path = os.path.abspath("./output/")
+            wdb_path = os.path.join(ouput_path, toplevel + ".wdb")
+            wcfg_path = os.path.join(ouput_path, toplevel + ".wcfg")
+            output_db = "{" + wdb_path + "}"
+            output_wcfg = "{" + wcfg_path + "}"
+            load_tcl = open("./output/load.tcl","w")
+            load_tcl.writelines([
+                    "catch {close_sim}\n",
+                    "open_wave_database {db}\n".format(db=output_db),
+                    "open_wave_config {cfg}\n".format(cfg=output_wcfg),
+            ])
+            load_tcl.close()
     # TODO: Add swtich to open output in gui for veiwing
     #Open Command: xsim -gui .\output\${toplevel}.wdb -view .\output\${toplevel}.
 
