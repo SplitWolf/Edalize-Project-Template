@@ -48,21 +48,21 @@ begin
     addSub <= '1';
     A <= "0001";
     B <= "0010";
-    wait for 20ns;
+    wait for 20 ns;
     addSub <= '0';
     A <= "0100";
     B <= "0010";
-    wait for 20ns;
+    wait for 20 ns;
     A <= "0001";
     B <= "0010";
-    wait for 20ns;
+    wait for 20 ns;
     A <= "0001";
     B <= "0010";
-    wait for 20ns;
+    wait for 20 ns;
     A <= "0100";
     B <= "0010";
     addSub <= '1';
-    wait for 20ns;
+    wait for 20 ns;
     wait;
 end process;
 

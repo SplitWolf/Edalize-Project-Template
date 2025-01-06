@@ -21,7 +21,7 @@ begin
         int_q <= '0';
     elsif rising_edge(i_clk) then
             if(i_cen = '1') then
-                int_q <= i_d after 2ns;
+                int_q <= i_d after 2 ns;
             end if;
     end if;
 end process bit1;

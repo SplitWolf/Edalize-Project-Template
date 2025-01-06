@@ -68,7 +68,7 @@ begin
 resetn <= '0', '1' after period;
 wait for period;
 input <= "0000";
-load <= '1', '0' after period+2ns;
+load <= '1', '0' after period+2 ns;
 count <= '0';
 wait for period;
 count <= '1';
