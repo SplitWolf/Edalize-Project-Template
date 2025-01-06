@@ -23,7 +23,7 @@ architecture rtl of registerNbits is
             i_cen: in std_logic;
             i_clk   : in std_logic;
             i_resetn : in std_logic;
-            o_q, o_qBar: out std_logic
+            o_q, o_qn: out std_logic
             );
     end component;
     signal int_cen: std_logic;
@@ -32,7 +32,7 @@ int_cen <= i_cen and i_load;
 gen_reg:
     for I in 0 to DataWidth-1 generate
         reg_bit: synth_enardFF port map
-        (i_resetn => i_resetn, i_d => i_in(I), i_cen => int_cen,i_clk => i_clk, o_q => o_out(I), o_qBar => open);
+        (i_resetn => i_resetn, i_d => i_in(I), i_cen => int_cen,i_clk => i_clk, o_q => o_out(I), o_qn => open);
     end generate gen_reg;
 
 end rtl;

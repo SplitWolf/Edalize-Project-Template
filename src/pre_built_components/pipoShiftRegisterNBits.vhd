@@ -31,7 +31,7 @@ component registerNbits is
         i_in: in std_logic_vector ((DataWidth-1) downto 0); 
         i_clear: in std_logic;
         i_load: in std_logic;
-        i_clock: in std_logic;
+        i_clk: in std_logic;
         o_out: out std_logic_vector ((DataWidth-1) downto 0)
     );
 end component;

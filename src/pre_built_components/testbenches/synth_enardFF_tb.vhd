@@ -22,7 +22,7 @@ signal sim_end : boolean := false;
 constant period: time := 50 ns; 
 
 begin
-DUT: entity basic_rtl.synth_enardFF port map (i_resetn => a_reset, i_d => d, i_cen => enable, i_clk => clock, o_q => q, o_qBar => qBar);
+DUT: entity basic_rtl.synth_enardFF port map (i_resetn => a_reset, i_d => d, i_cen => enable, i_clk => clock, o_q => q, o_qn => qBar);
 
 -- this is the clock process to simulate the clock. It will toggle
 -- every half period

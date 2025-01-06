@@ -28,8 +28,9 @@ architecture sim of pipoShiftRegisterNbits_tb is
     end component;
 
     signal input, output: std_logic_vector(3 downto 0);
-    signal sIn, shl, shr, clr, load, clock, sOut: std_logic;
+    signal sIn, shlr, reset, load, clock,cen, sOut: std_logic;
 
+    signal case_int: natural := 0;
     signal sim_end : boolean := false;
     constant period: time := 50 ns; 
 
@@ -52,35 +53,61 @@ DUT: entity basic_rtl.pipoShiftRegisterNBits
  port map(
     i_in => input,
     i_serialIn => sIn,
-    i_shiftLeft => shl,
-    i_shiftRight => shr,
-    i_clear => clr,
+    i_shitleftn_shiftright => shlr,
+    i_resetn => reset,
     i_load => load,
-    i_clock => clock,
+    i_clk => clock,
+    i_cen => cen,
     o_serialOut => sOut,
     o_out => output
 );
 
 tb: process
 begin
-clr <= '1', '0' after period;
-wait for period;
+reset <= '0', '1' after period;
+cen <= '0';
+wait for period - 2ns;
+-- Load 0101
 input <= "0101";
 sIn <= '1';
-shl <= '0';
-shr <= '0';
+shlr <= '0';
 load <= '1';
+cen <= '1', '0' after period;
 wait for period;
+case_int <= case_int + 1;
+report "Case: " & integer'image(case_int) & " Ouput: " & to_string(output);
+assert output = "0101"
+    report "ouput not expected"
+    severity error;
+-- Shift Left, cen = 0. Do nothing
 sIn <= '0';
-shl <= '1';
-shr <= '0';
+shlr <= '0';
 load <= '0';
 wait for period;
+case_int <= case_int + 1;
+report "Case: " & integer'image(case_int) & " Ouput: " & to_string(output);
+assert output = "0101"
+    report "ouput not expected"
+    severity error;
+-- Shift Left, cen = 1. Shfit 0101 left 1, Sin=0, Expected: 1010
+cen <= '1';
+wait for period;
+case_int <= case_int + 1;
+report "Case: " & integer'image(case_int) & " Ouput: " & to_string(output);
+assert output = "1010"
+    report "ouput not expected"
+    severity error;
+-- Shift Left, cen = 1. Shfit 1010 left 1, Sin=1, Expected: 0101
 sIn <= '1';
-shl <= '0';
-shr <= '1';
+shlr <= '0';
 load <= '0';
 wait for period;
+case_int <= case_int + 1;
+report "Case: " & integer'image(case_int) & " Ouput: " & to_string(output);
+assert output = "0101"
+    report "ouput not expected"
+    severity error;
+
 
 sim_end <= true;
 report "Test: OK";
