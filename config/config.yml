@@ -1,6 +1,6 @@
 project:
   name: edalize_project_template
-  top_level: and_gate  # defualt: template
+  top_level: pipoShiftRegisterNbits  # defualt: and_gate
   build_dir: build
   sim_tool: xsim
   synth_tool: quartus
@@ -10,7 +10,7 @@ pre_built_compontents:
   location: './src/pre_built_components'
   source_type: vhdlSource-2008
 
-device_settings: # Quartus
+device_settings_intel: # Quartus
   family: 'Cyclone IV E'
   device: 'EP4CE115F29C7'
   cable: 'USB-Blaster[USB-0]'

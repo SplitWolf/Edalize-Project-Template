@@ -83,7 +83,7 @@ def main():
             edam['tool_options']['quartus']['family'] = config_data['device_settings_intel']['family']
             edam['tool_options']['quartus']['device'] = config_data['device_settings_intel']['device']
             edam['tool_options']['quartus']['cable'] = config_data['device_settings_intel']['cable']
-            edam['tool_options']['quartus']['board_device_index']= config_data['device_settings']['board_device_index']
+            edam['tool_options']['quartus']['board_device_index']= config_data['device_settings_intel']['board_device_index']
             if pgm:
                 edam['tool_options']['quartus']['pgm'] = 'quartus'
             else:
