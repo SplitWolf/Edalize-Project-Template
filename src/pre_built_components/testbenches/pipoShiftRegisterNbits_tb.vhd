@@ -66,7 +66,7 @@ tb: process
 begin
 reset <= '0', '1' after period;
 cen <= '0';
-wait for period - 2ns;
+wait for period - 2 ns;
 -- Load 0101
 input <= "0101";
 sIn <= '1';
