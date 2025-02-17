@@ -49,5 +49,5 @@ begin
     end generate gen_comp;
     o_lt <= int_lt_out(0);
     o_gt <= int_gt_out(0);
-    o_eq <= o_lt nor o_gt;
+    o_eq <= int_lt_out(0) nor int_gt_out(0);
 end rtl ; -- rtl
