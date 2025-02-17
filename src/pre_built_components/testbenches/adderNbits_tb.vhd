@@ -63,6 +63,10 @@ begin
     B <= "0010";
     addSub <= '1';
     wait for 20 ns;
+    A <= "1000";
+    B <= "0010";
+    addSub <= '1';
+    wait for 20 ns;
     wait;
 end process;
 
