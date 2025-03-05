@@ -12,12 +12,14 @@ import glob
 def main():
     parser = ArgumentParser()
     parser.add_argument("-m","--mode",dest="mode",help="Mode to compile sim (complies _tb file), build-intel, or build-amd",default="sim")
-    parser.add_argument("-c","--configure-only",dest="config_only",help="Do not build, only configure the project",action="store_true")
-    parser.add_argument("-p","--program",dest="pgm",help="Do not build, only configure the project",action="store_true")
+    parser.add_argument("-c","--configure",dest="config",help="Configure & build the project",action="store_true")
+    parser.add_argument("-p","--program",dest="pgm",help="Program the target",action="store_true")
+    parser.add_argument("-v","--view",dest="view",help="View simulation result",action="store_true")
     args = parser.parse_args()
-    config_only = args.config_only
+    config = args.config
     pgm = args.pgm
     mode = args.mode
+    view_sim = args.view
     print(mode)
 
 
@@ -30,7 +32,8 @@ def main():
     pre_built_files_vhdl = glob.glob(os.path.join(config_data['pre_built_compontents']['location'], "*.vhd"))
     pre_built_testbenches_vhdl = glob.glob(os.path.join(config_data['pre_built_compontents']['location'], "testbenches/*.vhd"))
 
-    src_files = glob.glob(os.path.join('./src', "*.vhd")) + glob.glob(os.path.join('./src', "*.sv")) + glob.glob(os.path.join('./src', "*.v"))
+    src_files = glob.glob(os.path.join('./src', "*.vhd")) 
+    # + glob.glob(os.path.join('./src', "*.sv")) + glob.glob(os.path.join('./src', "*.v"))
     src_testbench_files = glob.glob(os.path.join('./src', "testbenches/*.vhd"))
 
     toplevel = project_options['top_level']
@@ -46,7 +49,7 @@ def main():
     bDir = ''
 
     if mode == "sim":   
-        # TODO: Add command line switch for quartus or xsim
+        # TODO: Add command line switch for model/questa sim or xsim
         toplevel = toplevel + "_tb"
         edam['toplevel'] = toplevel
         bDir = build_dir + "\\sim"
@@ -71,7 +74,6 @@ def main():
             else:
                  xsim_config_tcl = "../../" + xsim_config_tcl;
             edam['tool_options']['xsim']['xsim_options'] = ["--wdb " + "./" + toplevel + '.wdb', "--tclbatch " + xsim_config_tcl]
-            # TODO: Copy output file after running tool
         else: 
             print("Sim tool not yet supported")
             exit(0)
@@ -116,14 +118,15 @@ def main():
 
     for file in pre_built_files_vhdl:
             all_files.append({'name': os.path.relpath(file,bDir), 'file_type': config_data['pre_built_compontents']['source_type'], 'logical_name': 'basic_rtl'})
-    for file in pre_built_testbenches_vhdl:
-            all_files.append({'name': os.path.relpath(file,bDir), 'file_type': config_data['pre_built_compontents']['source_type'], 'logical_name': 'work'})
+    if mode == "sim":
+        for file in pre_built_testbenches_vhdl:
+                all_files.append({'name': os.path.relpath(file,bDir), 'file_type': config_data['pre_built_compontents']['source_type'], 'logical_name': 'work'})
     for file in src_files + src_testbench_files:
             all_files.append({'name': os.path.relpath(file,bDir), 'file_type': config_data['project']['source_type'], 'logical_name': 'work'})
-            
-    #TODO: Make dynamic
     if(mode=="build-amd"):
-        all_files.append({'name': os.path.relpath('./config/project.xdc',bDir), 'file_type': 'xdc'})
+        all_files.append({'name': os.path.relpath(project_options['xdc_file'],bDir), 'file_type': 'xdc'})
+        all_files.append({'name': os.path.relpath('.config/timing.xdc',bDir), 'file_type': 'xdc'})
+
     edam['files'] = all_files
 
     backend = edatool.get_edatool(tool)(edam=edam, work_root=bDir)
@@ -131,9 +134,9 @@ def main():
     if not os.path.exists(bDir): 
         os.makedirs(bDir)
     # TODO: Catch exceptions
-
-    backend.configure()
-    # TODO: Potentially make this a pre-build hook
+    if config:
+        backend.configure()
+    # Setup Quartus Pin Assignments
     if mode == "build-intel":
         project_tcl = open(bDir  + "\\" + project_options['name'] + ".tcl", "a")
         quartus_assign_tcl = open("./config/quartus_assign.tcl","r")
@@ -142,34 +145,38 @@ def main():
         project_tcl.close()
         quartus_assign_tcl.close()
 
-    if not config_only:
-        backend.build()
-        backend.run()
-    else: 
-        exit(0)
+    backend.build()
+    backend.run()
 
     # Generate Ouptut Files
-    #TODO: Use variable for output dir
-    #TODO: Implement for other modes
+    output_dir=project_options['output_dir']
     if mode == "sim":
         if project_options['sim_tool'] == 'xsim':
-            if not os.path.exists("output"): 
-                os.makedirs("output")
-            copy(os.path.join(bDir, toplevel + ".wdb"), "output/")
-            copy(os.path.join(bDir, toplevel + ".wcfg"), "output/")
-            ouput_path = os.path.abspath("./output/")
-            wdb_path = os.path.join(ouput_path, toplevel + ".wdb")
-            wcfg_path = os.path.join(ouput_path, toplevel + ".wcfg")
+            if not os.path.exists(output_dir): 
+                os.makedirs(output_dir)
+            copy(os.path.join(bDir, toplevel + ".wdb"), output_dir)
+            copy(os.path.join(bDir, toplevel + ".wcfg"), output_dir)
+            output_path = os.path.abspath(output_dir)
+            wdb_path = os.path.join(output_path, toplevel + ".wdb")
+            wcfg_path = os.path.join(output_path, toplevel + ".wcfg")
             output_db = "{" + wdb_path + "}"
             output_wcfg = "{" + wcfg_path + "}"
-            load_tcl = open("./output/load.tcl","w")
+            load_tcl = open(os.path.join(output_path,"load.tcl"),"w")
             load_tcl.writelines([
+                    "catch save_wave_config {cfg}\n".format(cfg=output_wcfg),
                     "catch {close_sim}\n",
                     "open_wave_database {db}\n".format(db=output_db),
                     "open_wave_config {cfg}\n".format(cfg=output_wcfg),
             ])
             load_tcl.close()
-    # TODO: Add swtich to open output in gui for veiwing
+    elif mode == "build-intel":
+        copy(os.path.join(bDir, project_options['name'] + ".sof"), output_dir)
+    elif mode == "build-amd":
+        copy(os.path.join(bDir, project_options['name'] + ".bit"), output_dir)
+
+    if view_sim and mode == "sim":
+        pass
+    #TODO: Add swtich to open output in gui for veiwing view_sim
     #Open Command: xsim -gui .\output\${toplevel}.wdb -view .\output\${toplevel}.
 
 if __name__ == "__main__":
