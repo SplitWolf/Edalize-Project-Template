@@ -74,9 +74,9 @@ gen_add:
 
     -- Ouput Drivers
     o_sum <= int_sum;
-    o_cout <= int_carry(DataWidth);
+    o_cout <= ((int_carry(DataWidth)) and not i_addn_sub) or (not int_carry(DataWidth) and i_addn_sub);
     o_negative <= int_sum(DataWidth-1);
-    o_overflow <= int_carry(DataWidth) xor int_carry(DataWidth-1);
+    o_overflow <= (int_carry(DataWidth) xor int_carry(DataWidth-1));
     o_zero <= vector_zero(DataWidth, int_sum);
 
     
