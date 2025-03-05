@@ -1,10 +1,12 @@
 project:
   name: edalize_project_template
-  top_level: pipoShiftRegisterNbits  # defualt: and_gate
+  top_level: and_gate  # defualt: and_gate
   build_dir: build
   sim_tool: xsim
   synth_tool: quartus
-  source_type: verilogSource-2005
+  source_type: vhdlSource-2008
+  output_dir: output
+  xdc_file: '../config/project.xdc' # Only used if mode=build-amd
 
 pre_built_compontents:
   location: './src/pre_built_components'
@@ -16,14 +18,14 @@ device_settings_intel: # Quartus
   cable: 'USB-Blaster[USB-0]'
   board_device_index: '1'
 
-# device_settings: Vivado
-#   part: 'xc7z007sclg400-1'
-#   board_part: ''
-#   synth: vivado
-#   pgm: '' # none/vivado -- Programming tool
-#   jtag_freq: 0
-#   hw_target: ''
-#   board_device_index: 1
+device_settings_amd: #Vivado
+  part: 'xc7z007sclg400-1'
+  synth: 'vivado'
+  # board_part: ''
+  # pgm: '' # none/vivado -- Programming tool
+  # jtag_freq: 0
+  # hw_target: ''
+  board_device_index: 1
 
 tool_options:
 # Custom extra tool options
